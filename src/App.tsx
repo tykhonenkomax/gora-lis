@@ -16,9 +16,9 @@ export default function App() {
       const id = route.section
       requestAnimationFrame(() => scrollToSection(id))
     } else {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'instant' })
     }
-  }, [route.page, route.section])
+  }, [route.page, route.section, route.nonce])
 
   return (
     <>
