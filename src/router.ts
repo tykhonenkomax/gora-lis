@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 // Роутинг на History API з чистими адресами:
-// /maietok-pushkar/            — головна
-// /maietok-pushkar/?s=houses   — головна з прокруткою до секції
-// /maietok-pushkar/zrub        — сторінка будинку
+// /gora-lis/            — головна
+// /gora-lis/?s=houses   — головна з прокруткою до секції
+// /gora-lis/zrub        — сторінка будинку
 // На GitHub Pages прямі заходи на /zrub обробляє 404.html (копія index.html).
 const BASE = import.meta.env.BASE_URL
 

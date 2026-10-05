@@ -3,6 +3,6 @@ import { defineConfig } from 'vite'
 
 // base — шлях репозиторію на GitHub Pages
 export default defineConfig({
-  base: '/maietok-pushkar/',
+  base: '/gora-lis/',
   plugins: [react()],
 })
