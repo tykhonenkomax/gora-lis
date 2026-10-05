@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowUpRight, MapPin, Navigation } from 'lucide-react'
 import { categories, credits, museums, nearby, places, retreat, type Category } from '../data/nearby'
+import { brand } from '../data/site'
 import { Img } from '../components/Img'
 import { Footer } from '../components/Footer'
 import { href } from '../router'
@@ -11,9 +12,9 @@ export function Nearby() {
   const label = (c: Category) => categories.find((x) => x.id === c)?.label
 
   useEffect(() => {
-    document.title = 'Поблизу — Маєток Пушкар'
+    document.title = `Поблизу — ${brand.name}`
     return () => {
-      document.title = 'Маєток Пушкар — котеджі у Верховині'
+      document.title = `${brand.name} — котеджі у Верховині`
     }
   }, [])
 
@@ -99,7 +100,7 @@ export function Nearby() {
         <Img className="banner__img" photo={retreat.photo} />
         <div className="slide__shade" />
         <div className="banner__content">
-          <p className="kicker">Маєток Пушкар</p>
+          <p className="kicker">{brand.name}</p>
           <h2 className="display display--md">{retreat.title}</h2>
           <p className="banner__text">{retreat.text}</p>
         </div>

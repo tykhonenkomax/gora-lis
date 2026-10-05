@@ -17,6 +17,7 @@ export function Footer() {
           <p className="footer__addr">
             <MapPin size={18} /> {contacts.address}
           </p>
+          <a href={contacts.mapUrl} target="_blank" rel="noreferrer">Відкрити в Google Maps</a>
         </div>
         <nav className="footer__col">
           {houses.map((h) => (
@@ -29,9 +30,9 @@ export function Footer() {
       </div>
       <div className="footer__map">
         <iframe
-          title="Карта"
+          title="Gora&Lis на Google Maps"
           loading="lazy"
-          src={`https://www.google.com/maps?q=${encodeURIComponent(contacts.mapQuery)}&output=embed`}
+          src={contacts.mapEmbedUrl}
         />
       </div>
       <p className="container footer__copy muted">

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ArrowLeft, ArrowRight, Check, Clock, Phone } from 'lucide-react'
-import { chan, contacts, home, houses, type House } from '../data/site'
+import { brand, chan, contacts, home, houses, type House } from '../data/site'
 import { Img } from '../components/Img'
 import { Icon } from '../components/Icon'
 import { Carousel } from '../components/Carousel'
@@ -15,9 +15,9 @@ export function HousePage({ house }: { house: House }) {
   const other = houses.find((h) => h.slug !== house.slug)
 
   useEffect(() => {
-    document.title = `${house.name} — Маєток Пушкар`
+    document.title = `${house.name} — ${brand.name}`
     return () => {
-      document.title = 'Маєток Пушкар — котеджі у Верховині'
+      document.title = `${brand.name} — котеджі у Верховині`
     }
   }, [house])
 
@@ -30,7 +30,7 @@ export function HousePage({ house }: { house: House }) {
           <a className="back" href={href('home', 'houses')}>
             <ArrowLeft size={18} /> Усі будинки
           </a>
-          <p className="kicker">Маєток Пушкар</p>
+          <p className="kicker">{brand.name}</p>
           <h1 className="display">{house.name}</h1>
           <p className="lead">{house.subtitle}</p>
           <p className="house-hero__price">

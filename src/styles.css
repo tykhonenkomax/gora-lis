@@ -392,6 +392,16 @@ p {
   font-size: clamp(3.6rem, 17vw, 9.5rem);
 }
 
+/* Обидва будинки в нижній частині вертикального оригіналу. */
+.slide--hero .slide__media {
+  object-position: 75% 72%;
+}
+
+.slide--hero .slide__content--center {
+  align-self: flex-start;
+  padding-top: calc(100px + var(--safe-t));
+}
+
 .slide__count {
   color: var(--cream);
   opacity: 0.7;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { brand, home, houses, type Slide } from '../data/site'
 import { nearby } from '../data/nearby'
@@ -7,37 +7,10 @@ import { useInView } from '../components/useInView'
 import { href } from '../router'
 import { Footer } from '../components/Footer'
 
-const usePortrait = () => {
-  const query = '(orientation: portrait)'
-  const [portrait, setPortrait] = useState(() => window.matchMedia(query).matches)
-  useEffect(() => {
-    const mq = window.matchMedia(query)
-    const onChange = () => setPortrait(mq.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-  return portrait
-}
-
 function Hero() {
-  // Вертикальне відео гарно виглядає лише на телефоні; на широкому екрані — фото.
-  const portrait = usePortrait()
   return (
     <section className="slide slide--hero in" id="top">
-      {portrait ? (
-        <video
-          className="slide__media"
-          src={home.heroVideo}
-          poster={home.heroPoster.sm}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-      ) : (
-        <Img className="slide__media" photo={home.heroWide} eager />
-      )}
+      <Img className="slide__media" photo={home.heroWide} eager />
       <div className="slide__shade slide__shade--hero" />
       <div className="slide__content slide__content--center">
         <p className="kicker">Верховина · Карпати</p>
@@ -47,7 +20,7 @@ function Hero() {
           Обрати будинок <ArrowRight size={18} />
         </a>
       </div>
-      <a className="scroll-cue" href={href('home', home.slides[0].id)} aria-label="Гортати далі">
+      <a className="scroll-cue" href={href('home', 'houses')} aria-label="Переглянути будинки">
         <ChevronDown size={28} />
       </a>
     </section>
@@ -130,11 +103,13 @@ export function Home() {
   return (
     <main>
       <Hero />
+      <div className="snap-end">
+        <Houses />
+      </div>
       {home.slides.map((s, i) => (
         <SlideSection key={s.id} slide={s} index={i} total={home.slides.length} />
       ))}
       <div className="snap-end">
-        <Houses />
         <Footer />
       </div>
     </main>
