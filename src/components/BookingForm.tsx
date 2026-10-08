@@ -20,7 +20,10 @@ export function BookingForm({ house }: { house: House }) {
   const selected = houses.find((h) => h.slug === slug) ?? house
   const guestCount = Math.min(guests, selected.guests)
   const nights = checkIn && checkOut ? Math.max(0, Math.round((+new Date(checkOut) - +new Date(checkIn)) / DAY)) : 0
-  const total = nights * selected.price + (withChan ? chan.price : 0)
+  const nightlyPrice = selected.price + (selected.extraGuest
+    ? Math.max(0, guestCount - selected.extraGuest.included) * selected.extraGuest.price
+    : 0)
+  const total = nights * nightlyPrice + (withChan ? chan.price : 0)
 
   const message = [
     `Заявка: ${selected.name}`,
@@ -66,7 +69,7 @@ export function BookingForm({ house }: { house: House }) {
         <select value={slug} onChange={(e) => setSlug(e.target.value as House['slug'])}>
           {houses.map((h) => (
             <option key={h.slug} value={h.slug}>
-              {h.name} — до {h.guests} осіб, {money(h.price)}/ніч
+              {h.name} — до {h.guests} осіб, {h.extraGuest && 'від '}{money(h.price)}/ніч
             </option>
           ))}
         </select>
@@ -95,6 +98,12 @@ export function BookingForm({ house }: { house: House }) {
           ))}
         </select>
       </label>
+      {selected.extraGuest && (
+        <p className="field--full">
+          {money(selected.price)} / ніч за {selected.extraGuest.included} гостей.
+          {' '}За кожного наступного гостя — +{money(selected.extraGuest.price)} / ніч.
+        </p>
+      )}
       <label className="field field--check">
         <input type="checkbox" checked={withChan} onChange={(e) => setWithChan(e.target.checked)} />
         <span>Чан (+{money(chan.price)})</span>
@@ -117,7 +126,7 @@ export function BookingForm({ house }: { house: House }) {
       </label>
       {nights > 0 && (
         <p className="booking__total field--full">
-          {nights} ноч. × {money(selected.price)}
+          {nights} ноч. × {money(nightlyPrice)}
           {withChan ? ` + чан ${money(chan.price)}` : ''} = <b>{money(total)}</b>
         </p>
       )}

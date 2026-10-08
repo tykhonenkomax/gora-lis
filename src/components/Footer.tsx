@@ -26,6 +26,7 @@ export function Footer() {
             </a>
           ))}
           <a href={href('nearby')}>Що поблизу</a>
+          <a href={href('home', 'availability')}>Вільні дати</a>
         </nav>
       </div>
       <div className="footer__map">

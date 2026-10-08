@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { brand, home, houses, type Slide } from '../data/site'
 import { nearby } from '../data/nearby'
@@ -6,6 +6,7 @@ import { Img } from '../components/Img'
 import { useInView } from '../components/useInView'
 import { href } from '../router'
 import { Footer } from '../components/Footer'
+import { Availability } from '../components/Availability'
 
 function Hero() {
   return (
@@ -29,9 +30,35 @@ function Hero() {
 
 function SlideSection({ slide, index, total }: { slide: Slide; index: number; total: number }) {
   const [ref, inView] = useInView<HTMLElement>()
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (inView) {
+      void video.play().catch(() => {})
+    } else {
+      video.pause()
+    }
+  }, [inView])
+
   return (
-    <section className={`slide ${inView ? 'in' : ''}`} id={slide.id} ref={ref}>
-      <Img className="slide__media" photo={slide.photo} />
+    <section className={`slide ${slide.video ? 'slide--video' : ''} ${inView ? 'in' : ''}`} id={slide.id} ref={ref}>
+      {slide.video ? (
+        <video
+          ref={videoRef}
+          className="slide__media"
+          src={slide.video}
+          poster={slide.photo.lg}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-label={slide.title}
+        />
+      ) : (
+        <Img className="slide__media" photo={slide.photo} />
+      )}
       <div className="slide__shade" />
       <div className="slide__content">
         <p className="kicker">
@@ -42,6 +69,7 @@ function SlideSection({ slide, index, total }: { slide: Slide; index: number; to
         </p>
         <h2 className="display display--md">{slide.title}</h2>
         <p className="lead">{slide.text}</p>
+        {slide.description && <p className="slide__description">{slide.description}</p>}
       </div>
     </section>
   )
@@ -105,6 +133,7 @@ export function Home() {
       <Hero />
       <div className="snap-end">
         <Houses />
+        <Availability />
       </div>
       {home.slides.map((s, i) => (
         <SlideSection key={s.id} slide={s} index={i} total={home.slides.length} />

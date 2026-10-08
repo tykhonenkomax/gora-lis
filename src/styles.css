@@ -17,6 +17,80 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* ---------- Зайнятість і проста панель власника ---------- */
+.availability, .admin-panel {
+  background: var(--cream);
+  color: var(--text);
+}
+.admin-panel { min-height: 100svh; padding: 32px 0 80px; }
+.admin-panel__top, .admin-panel__top a, .admin-panel__list-heading {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.admin-panel__top { margin-bottom: 32px; }
+.admin-panel__top a { justify-content: flex-start; }
+.house-switch { display: flex; gap: 12px; margin: 28px 0; }
+.house-switch button {
+  flex: 1; max-width: 280px; min-height: 60px; border-radius: 16px;
+  border: 1px solid #89988b; background: transparent; color: var(--text); font-weight: 700;
+}
+.house-switch button[aria-pressed="true"] { background: #263f31; color: white; border-color: #263f31; }
+.admin-panel__layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 28px; }
+.availability__navigation { display: flex; justify-content: flex-end; gap: 12px; margin: 20px 0; }
+.availability__months { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.availability__months .booking-calendar { padding: 16px 12px; }
+.availability__months .booking-calendar__nav { justify-content: center; min-height: 44px; }
+.availability__error { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 20px; }
+.booking-calendar { background: #fffdf8; border: 1px solid var(--line); border-radius: 22px; padding: clamp(12px, 2vw, 24px); }
+.booking-calendar__nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 20px; }
+.booking-calendar__nav h3 { font-size: 1.05rem; text-transform: capitalize; text-align: center; }
+.booking-calendar__nav button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--cream); color: var(--text); }
+.booking-calendar__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.booking-calendar__weekday { text-align: center; font-size: .8rem; padding-bottom: 8px; color: var(--muted-dark); }
+.booking-calendar__day { min-width: 0; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; background: #edf3e9; color: #244731; font-size: .9rem; line-height: 1.2; gap: 2px; }
+.booking-calendar__day.is-busy { background: #f6e0df; color: #943f4c; }
+.booking-calendar__day.is-tentative { background: #f3ead4; color: #637044; }
+.booking-calendar__day.is-past { opacity: .45; background: #efede7; }
+.booking-calendar__day.is-unknown { background: #efede7; color: #686b66; }
+.booking-calendar__day.is-selected { border: 2px solid #244731; background: #cee1c6; color: #183825; }
+.booking-calendar__legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-size: .82rem; }
+.booking-calendar__legend span { display: inline-flex; align-items: center; gap: 6px; }
+.calendar-key { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.calendar-key--busy { background: #f6e0df; color: #943f4c; }
+.calendar-key--tentative { background: #f3ead4; color: #637044; }
+.calendar-key--free { background: #edf3e9; border: 1px solid #c8d8c0; }
+.booking-calendar__hint { font-size: .8rem; color: var(--muted-dark); margin-top: 12px; }
+.calendar-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 18px; background: #fffdf8; border: 1px solid #89988b; border-radius: 12px; color: var(--text); font-weight: 600; }
+.calendar-button--primary { background: #263f31; color: white; border-color: #263f31; }
+.calendar-button--danger { color: #943f4c; border-color: #943f4c; }
+.admin-panel button:disabled, .availability button:disabled { opacity: .45; cursor: not-allowed; }
+.admin-panel :focus-visible, .availability :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.admin-panel__form { display: grid; gap: 18px; background: #fffdf8; padding: 24px; border-radius: 22px; border: 1px solid var(--line); }
+.admin-panel__form label { display: grid; gap: 8px; font-weight: 600; min-width: 0; }
+.admin-panel__form input { width: 100%; min-width: 0; min-height: 52px; padding: 12px; border: 1px solid #89988b; border-radius: 10px; background: white; color: var(--text); font: inherit; }
+.admin-panel__status { margin: 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 12px; }
+.admin-panel__status label { display: flex; align-items: center; min-height: 40px; }
+.admin-panel__status input { width: 20px; min-height: 20px; height: 20px; accent-color: #263f31; }
+.admin-panel__form p, .admin-panel__bookings li p { font-size: .9rem; color: var(--muted-dark); }
+.admin-panel__login { max-width: 480px; margin-top: 28px; }
+.admin-panel__setup { max-width: 620px; margin-top: 28px; padding: 24px; border: 1px solid var(--line); border-radius: 20px; display: grid; gap: 16px; }
+.admin-panel__error, .admin-panel__success { margin-top: 20px; padding: 18px; border-radius: 12px; }
+.admin-panel__error { background: #f6e0df; color: #7d2535; }
+.admin-panel__success { background: #dfeeda; color: #244731; }
+.admin-panel__bookings { margin-top: 40px; }
+.admin-panel__list-heading { margin-bottom: 20px; flex-wrap: wrap; }
+.admin-panel__bookings ul { padding: 0; margin: 0; list-style: none; display: grid; gap: 12px; }
+.admin-panel__bookings li { display: flex; justify-content: space-between; align-items: center; gap: 20px; background: #fffdf8; padding: 20px; border-radius: 16px; border: 1px solid var(--line); }
+.admin-panel__cancel { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-panel__cancel p { flex-basis: 100%; }
+@media (max-width: 700px) {
+  .admin-panel__layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .availability__months { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+  .availability__months .booking-calendar { flex: 0 0 min(320px, 100%); scroll-snap-align: start; }
+  .admin-panel__bookings li { align-items: stretch; flex-direction: column; }
+  .admin-panel__form { padding: 20px; }
+  .admin-panel__list-heading h2 { font-size: 1.25rem; }
+}
+
 *,
 *::before,
 *::after {
@@ -388,13 +462,90 @@ p {
   margin-bottom: 28px;
 }
 
+.slide--video {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: center;
+  background: radial-gradient(ellipse at top left, #304b3d, #14241c 65%);
+}
+
+.slide.slide--video .slide__media {
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 0;
+  object-fit: scale-down;
+  object-position: right center;
+  background: transparent;
+  transform: none;
+  transition: none;
+}
+
+.slide--video .slide__shade {
+  display: none;
+}
+
+.slide--video .slide__content {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding: 80px clamp(24px, 5vw, 96px);
+}
+
+.slide--video .display {
+  font-size: clamp(2.6rem, 5vw, 6rem);
+}
+
+.slide__description {
+  max-width: 62ch;
+  margin: clamp(24px, 4vh, 48px) 0 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(245, 240, 230, 0.22);
+  color: var(--cream);
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  line-height: 1.8;
+}
+
+@media (max-width: 700px) {
+  .slide--video {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .slide--video .slide__content {
+    padding: calc(76px + var(--safe-t)) 24px 20px;
+  }
+
+  .slide.slide--video .slide__media {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 576 / 1024;
+    object-fit: contain;
+    object-position: center;
+    padding: 0;
+  }
+}
+
 .slide--hero .display {
   font-size: clamp(3.6rem, 17vw, 9.5rem);
 }
 
-/* Обидва будинки в нижній частині вертикального оригіналу. */
+/* Тримаємо обидва будинки в кадрі покращеного фото. */
 .slide--hero .slide__media {
-  object-position: 75% 72%;
+  object-position: center bottom;
+}
+
+@media (orientation: portrait) {
+  .slide--hero .slide__media {
+    object-fit: contain;
+  }
 }
 
 .slide--hero .slide__content--center {

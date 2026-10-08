@@ -32,10 +32,10 @@ export const brand = {
   tagline: 'Котеджі у Верховині з чаном та всіма зручностями',
 }
 
-export type Slide = { id: string; kicker: string; title: string; text: string; photo: Photo; align?: 'bottom' | 'center' }
+export type Slide = { id: string; kicker: string; title: string; text: string; description?: string; photo: Photo; video?: string; align?: 'bottom' | 'center' }
 
 export const home = {
-  heroWide: photo('general/overview-1', 'Два будинки Gora&Lis — Atmosfera та Panorama серед Карпат'),
+  heroWide: photo('general/overview-enhanced', 'Два будинки Gora&Lis — Atmosfera та Panorama серед Карпат'),
   slides: [
     {
       id: 'about',
@@ -48,6 +48,8 @@ export const home = {
       id: 'chan',
       kicker: 'Релакс',
       title: 'Чан з джакузі',
+      description: 'Дозвольте собі нікуди не поспішати. Пориньте в тепло води, вдихніть свіже гірське повітря й відчуйте, як стихають думки. Поруч — смереки, над вами — відкрите небо, а попереду — вечір, який хочеться провести разом. Після прогулянок Карпатами тут особливо приємно зупинитися й просто побути в моменті.',
+      video: asset('video/chan-relax.mp4'),
       text: 'Гаряча вода 38–39 °C, гідромасаж і підсвітка. Дощ, сніг і мороз лише посилюють ефект.',
       photo: photo('panorama/exterior-2', 'Чан на території біля Panorama'),
     },
@@ -106,6 +108,7 @@ export type House = {
   subtitle: string
   guests: number
   price: number
+  extraGuest?: { included: number; price: number }
   cover: Photo
   facts: { icon: string; label: string }[]
   intro: string
@@ -120,6 +123,7 @@ export const houses: House[] = [
     subtitle: 'Затишний будинок з каміном',
     guests: 6,
     price: 4000,
+    extraGuest: { included: 4, price: 500 },
     cover: photo('atmosfera/ground-floor-1', 'Вітальня з каміном у Atmosfera'),
     facts: [
       { icon: 'users', label: 'до 6 осіб' },
@@ -232,7 +236,7 @@ export const faq = [
   { q: 'О котрій заїзд і виїзд?', a: LOREM },
   { q: 'Скільки коштує чан і як його замовити?', a: `Вартість — ${chan.price} грн. ${chan.note}` },
   { q: 'Чи буде світло під час відключень?', a: 'Так, будинок Atmosfera обладнаний інвертором 7 кВт.' },
-  { q: 'Як до вас доїхати?', a: `Наша адреса: ${contacts.address}. Точна позначка Gora&Lis і посилання на Google Maps — у розділі контактів.` },
-  { q: 'Чи можна з дітьми або тваринами?', a: LOREM },
+  { q: 'Як до вас доїхати?', a: `Наша адреса: ${contacts.address}. Біля дитячого оздоровчого табору поверніть з асфальтованої дороги та проїдьте ще 500 метрів ґрунтово-гравійною дорогою. Перед будинком є підйом, який за звичайних умов подолає будь-який автомобіль. Взимку, коли випадає багато снігу, піднятися зможе лише автомобіль із повним приводом. У такому разі машину можна залишити перед підйомом — місце для паркування є за 150 метрів від будинку. Точна позначка Gora&Lis і посилання на Google Maps — у розділі контактів.` },
+  { q: 'Чи можна з домашніми тваринами?', a: 'Перебування з домашніми тваринами можливе лише у виняткових випадках, за попереднім погодженням із нами та за умови дотримання узгоджених правил. Будь ласка, зв’яжіться з нами до бронювання, щоб обговорити можливість проживання з вашим улюбленцем та умови перебування.' },
   { q: 'Чи працюєте ви взимку?', a: LOREM },
 ]

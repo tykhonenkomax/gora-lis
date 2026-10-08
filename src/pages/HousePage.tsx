@@ -8,6 +8,7 @@ import { BookingForm } from '../components/BookingForm'
 import { Faq } from '../components/Faq'
 import { Footer } from '../components/Footer'
 import { href } from '../router'
+import { Availability } from '../components/Availability'
 
 const money = (n: number) => `${n.toLocaleString('uk-UA')} грн`
 
@@ -34,8 +35,13 @@ export function HousePage({ house }: { house: House }) {
           <h1 className="display">{house.name}</h1>
           <p className="lead">{house.subtitle}</p>
           <p className="house-hero__price">
-            <b>{money(house.price)}</b> / ніч · до {house.guests} осіб
+            {house.extraGuest && 'від '}<b>{money(house.price)}</b> / ніч · до {house.guests} осіб
           </p>
+          {house.extraGuest && (
+            <p>
+              Базова ціна за {house.extraGuest.included} гостей. За кожного наступного гостя — +{money(house.extraGuest.price)} / ніч.
+            </p>
+          )}
         </div>
       </section>
 
@@ -105,6 +111,8 @@ export function HousePage({ house }: { house: House }) {
         </div>
         <Carousel photos={home.territory} />
       </section>
+
+      <Availability house={house} />
 
       <section className="section booking" id="booking">
         <div className="container">

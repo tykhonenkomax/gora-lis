@@ -1,0 +1,15 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  VITE_BASE_PATH = "/"
+  # Публічні параметри браузерного клієнта; права забезпечує Supabase RLS.
+  VITE_SUPABASE_URL = "https://vksnegaaahhoffdjjkvp.supabase.co"
+  VITE_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_sXYTn4I-HMOaEJ0Yltbf8Q_fPvvKkPU"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

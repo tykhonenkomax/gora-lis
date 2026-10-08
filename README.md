@@ -4,6 +4,8 @@
 
 Сайт: https://tykhonenkomax.github.io/gora-lis/
 
+Календар зайнятості та панель власника `/admin`: [одноразове підключення Supabase](docs/booking-setup.md).
+
 ## Розробка
 
 ```sh

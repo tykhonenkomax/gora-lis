@@ -28,6 +28,7 @@ export function Header() {
     { label: 'Головна', to: href('home') },
     ...houses.map((h) => ({ label: h.name, to: href(h.slug) })),
     { label: 'Поблизу', to: href('nearby') },
+    { label: 'Вільні дати', to: href('home', 'availability') },
     { label: 'Чан', to: href('home', 'chan') },
     { label: 'Територія', to: href('home', 'fire') },
     { label: 'Контакти', to: href('home', 'contacts') },
