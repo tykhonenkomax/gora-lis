@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Heart, TreePine } from 'lucide-react'
 import { bookingClient } from '../data/bookingApi'
 import { dateKey, formatDay, monthStart, parseDay, shiftMonth, todayKey } from '../data/bookingDates'
-import { houses, type House } from '../data/site'
+import { contacts, houses, type House } from '../data/site'
+import { BookingForm } from './BookingForm'
 
 export function HouseSwitch({ value, onChange, disabled }: { value: House['slug']; onChange: (slug: House['slug']) => void; disabled?: boolean }) {
   return (
@@ -70,8 +71,9 @@ function CalendarLegend() {
   </div>
 }
 
-export function Availability({ house }: { house?: House }) {
+export function Availability({ house, showBooking = false }: { house?: House; showBooking?: boolean }) {
   const [slug, setSlug] = useState<House['slug']>(house?.slug ?? 'zrub')
+  const [sending, setSending] = useState(false)
   const [month, setMonth] = useState(() => monthStart(parseDay(todayKey())))
   const [result, setResult] = useState<{ key: string; days: { night: string; status: string }[]; error?: string } | null>(null)
   const [refresh, setRefresh] = useState(0)
@@ -114,7 +116,7 @@ export function Availability({ house }: { house?: House }) {
       <div className="container">
         <p className="kicker kicker--dark">Плануйте відпочинок</p>
         <h2 className="display display--sm display--dark">Вільні дати{house ? ` · ${house.name}` : ''}</h2>
-        {!house && <HouseSwitch value={slug} onChange={setSlug} />}
+        {!house && <HouseSwitch value={slug} onChange={setSlug} disabled={sending} />}
         <div className="availability__navigation">
           <button className="calendar-button" aria-label="Попередні три місяці" disabled={dateKey(month) <= dateKey(monthStart(parseDay(todayKey())))} onClick={() => setMonth(previous => {
             const earlier = shiftMonth(previous, -3)
@@ -128,6 +130,14 @@ export function Availability({ house }: { house?: House }) {
         </div>
         <CalendarLegend />
         {error && <div className="availability__error"><p role="status">{error}</p><button className="calendar-button" onClick={() => setRefresh(value => value + 1)}>Спробувати ще раз</button></div>}
+        {showBooking && (
+          <section className="booking availability__booking" id="booking" aria-labelledby="home-booking-title">
+            <h2 className="display display--sm" id="home-booking-title">Залишити заявку</h2>
+            <p className="muted">Оберіть дати та залиште контакти — ми зв’яжемося з вами для підтвердження.</p>
+            <a className="btn btn--light booking__call" href={`tel:${contacts.phone}`}>Зателефонувати: {contacts.phoneLabel}</a>
+            <BookingForm house={houses.find(item => item.slug === slug)!} onHouseChange={setSlug} onSendingChange={setSending} />
+          </section>
+        )}
       </div>
     </section>
   )

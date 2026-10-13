@@ -993,6 +993,16 @@ p {
   margin-top: 4px;
 }
 
+.availability__booking {
+  margin-top: 36px;
+  padding: clamp(20px, 4vw, 48px);
+  border-radius: var(--radius);
+}
+
+.availability__booking .field {
+  min-width: 0;
+}
+
 .booking__call {
   margin: 22px 0 28px;
   width: 100%;

@@ -134,7 +134,7 @@ export function Home() {
       <Hero />
       <div className="snap-end">
         <Houses />
-        <Availability />
+        <Availability showBooking />
       </div>
       {home.slides.map((s, i) => (
         <SlideSection key={s.id} slide={s} index={i} total={home.slides.length} />

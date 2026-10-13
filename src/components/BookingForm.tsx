@@ -9,7 +9,11 @@ const DAY = 24 * 60 * 60 * 1000
 const money = (n: number) => `${n.toLocaleString('uk-UA')} грн`
 
 // Повідомлення надсилає сервер; дати блокує власник після підтвердження.
-export function BookingForm({ house }: { house: House }) {
+export function BookingForm({ house, onHouseChange, onSendingChange }: {
+  house: House
+  onHouseChange?: (slug: House['slug']) => void
+  onSendingChange?: (sending: boolean) => void
+}) {
   const [slug, setSlug] = useState(house.slug)
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
@@ -18,13 +22,14 @@ export function BookingForm({ house }: { house: House }) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [sent, setSent] = useState(false)
+  const [sentMessage, setSentMessage] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [serverTotal, setServerTotal] = useState<number | null>(null)
   const [website, setWebsite] = useState('')
   const attempt = useRef<{ signature: string; id: string } | null>(null)
 
-  const selected = houses.find((h) => h.slug === slug) ?? house
+  const selected = onHouseChange ? house : houses.find((h) => h.slug === slug) ?? house
   const guestCount = Math.min(guests, selected.guests)
   const nights = checkIn && checkOut ? Math.max(0, Math.round((+new Date(checkOut) - +new Date(checkIn)) / DAY)) : 0
   const nightlyPrice = selected.price + (selected.extraGuest
@@ -47,6 +52,7 @@ export function BookingForm({ house }: { house: House }) {
     if (sending) return
     setError('')
     setSending(true)
+    onSendingChange?.(true)
     try {
       const invalid = rangeError(checkIn, checkOut)
       if (invalid) throw new Error(invalid)
@@ -66,10 +72,11 @@ export function BookingForm({ house }: { house: House }) {
       }
       if (!data?.ok || data.requestId !== attempt.current.id || typeof data.total !== 'number') throw new Error('Не вдалося підтвердити надсилання. Спробуйте знову.')
       setServerTotal(data.total)
+      setSentMessage(message)
       setSent(true)
     } catch (failure) {
       setError(failure instanceof Error && failure.name !== 'AbortError' && failure.name !== 'TimeoutError' ? failure.message : 'Надсилання триває довше очікуваного. Повторіть спробу або зателефонуйте нам.')
-    } finally { setSending(false) }
+    } finally { setSending(false); onSendingChange?.(false) }
   }
 
   if (sent) {
@@ -77,7 +84,7 @@ export function BookingForm({ house }: { house: House }) {
       <div className="booking__done">
         <h3>Заявку надіслано!</h3>
         <p>Власник отримав повідомлення та зв’яжеться з вами для підтвердження. Дати ще не заброньовані.</p>
-        <pre>{message}</pre>
+        <pre>{sentMessage}</pre>
         {serverTotal !== null && <p className="booking__total">Орієнтовно: {money(serverTotal)}</p>}
         <div className="booking__actions">
           <a className="btn btn--accent" href={`tel:${contacts.phone}`}>
@@ -98,7 +105,7 @@ export function BookingForm({ house }: { house: House }) {
       <label className="booking__honeypot" aria-hidden="true">Сайт<input name="website" autoComplete="off" tabIndex={-1} value={website} onChange={event => setWebsite(event.target.value)} /></label>
       <label className="field field--full">
         <span>Будинок</span>
-        <select value={slug} onChange={(e) => setSlug(e.target.value as House['slug'])}>
+        <select value={selected.slug} onChange={(e) => (onHouseChange ?? setSlug)(e.target.value as House['slug'])}>
           {houses.map((h) => (
             <option key={h.slug} value={h.slug}>
               {h.name} — до {h.guests} осіб, {h.extraGuest && 'від '}{money(h.price)}/ніч
