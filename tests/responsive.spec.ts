@@ -71,10 +71,10 @@ test('brand fonts load locally and mobile hero preserves the whole photograph', 
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('./')
   await page.evaluate(() => Promise.all([
-    document.fonts.load('500 24px "Lora Variable"', 'Gora&Lis Ґанок'),
+    document.fonts.load('600 24px "Golos Text Variable"', 'Gora&Lis Ґанок'),
     document.fonts.load('400 16px "Onest Variable"', 'Вільні дати'),
   ]))
-  expect(await page.evaluate(() => document.fonts.check('500 24px "Lora Variable"', 'Gora&Lis Ґанок'))).toBe(true)
+  expect(await page.evaluate(() => document.fonts.check('600 24px "Golos Text Variable"', 'Gora&Lis Ґанок'))).toBe(true)
   expect(await page.evaluate(() => document.fonts.check('400 16px "Onest Variable"', 'Вільні дати'))).toBe(true)
   expect(externalFonts).toEqual([])
   const photo = page.locator('.slide--hero .slide__media')

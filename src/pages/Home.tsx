@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, MapPin, Phone } from 'lucide-react'
 import { brand, contacts, home, houses, type Slide } from '../data/site'
 import { nearby } from '../data/nearby'
 import { Img } from '../components/Img'
@@ -10,21 +10,25 @@ import { Availability } from '../components/Availability'
 
 function Hero() {
   return (
-    <section className="slide slide--hero in" id="top">
-      <Img className="slide__media" photo={home.heroWide} eager />
-      <div className="slide__shade slide__shade--hero" />
-      <div className="slide__content slide__content--center">
-        <p className="kicker">Верховина · Карпати</p>
-        <h1 className="display">{brand.name}</h1>
-        <p className="lead">{brand.tagline}</p>
-        <p className="hero-contact"><a href={`tel:${contacts.phone}`}>{contacts.phoneLabel}</a><span>Відпочинок від 2 ночей</span></p>
-        <a className="btn btn--light" href={href('home', 'houses')}>
-          Обрати будинок <ArrowRight size={18} />
-        </a>
+    <section className="hero slide--hero" id="top" aria-labelledby="hero-title">
+      <div className="hero__copy">
+        <p className="hero__eyebrow"><span /> Ваш відпочинок у Карпатах</p>
+        <h1 className="hero__title" id="hero-title">{brand.name}</h1>
+        <p className="hero__tagline">Ближче до природи.<br />Ближче до себе.</p>
+        <p className="hero__description">Два будинки у Верховині — для повільних ранків, теплих вечорів і відпочинку в чані просто неба.</p>
+        <div className="hero__actions">
+          <a className="btn hero__primary" href={href('home', 'houses')}>Обрати будинок <ArrowRight size={18} /></a>
+          <a className="btn btn--outline" href={href('home', 'availability')}>Вільні дати</a>
+        </div>
+        <div className="hero__details">
+          <div className="hero__facts"><span><strong>02</strong> будинки</span><span><strong>від 2</strong> ночей</span></div>
+          <a className="hero__phone" href={`tel:${contacts.phone}`}><Phone size={17} />{contacts.phoneLabel}</a>
+        </div>
       </div>
-      <a className="scroll-cue" href={href('home', 'houses')} aria-label="Переглянути будинки">
-        <ChevronDown size={28} />
-      </a>
+      <figure className="hero__visual">
+        <Img className="slide__media" photo={home.heroWide} eager sizes="(max-width: 899px) 100vw, 58vw" />
+        <figcaption className="hero__caption"><span>Atmosfera <span className="hero__caption-plus">+</span> Panorama</span><span><MapPin size={15} /> Верховина</span></figcaption>
+      </figure>
     </section>
   )
 }

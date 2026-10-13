@@ -12,7 +12,7 @@
   --radius: 22px;
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-t: env(safe-area-inset-top, 0px);
-  --display: 'Lora Variable', Georgia, serif;
+  --display: 'Golos Text Variable', 'Onest Variable', system-ui, sans-serif;
   --body: 'Onest Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --header-height: 86px;
   --gutter: 24px;
@@ -20,9 +20,6 @@
 }
 
 /* ---------- Зайнятість і проста панель власника ---------- */
-.hero-contact { display: grid; gap: 6px; margin: 0 0 20px; }
-.hero-contact a { font-size: 1.25rem; font-weight: 700; }
-.hero-contact span { font-size: .9rem; }
 .booking__fields { display: contents; }
 .booking__honeypot { display: none; }
 .booking__privacy { font-size: .85rem; color: var(--muted); }
@@ -155,7 +152,7 @@ p {
 
 .display {
   font-family: var(--display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(2.8rem, 7vw, 7rem);
   line-height: 1.08;
   letter-spacing: -0.04em;
@@ -533,20 +530,6 @@ summary:focus-visible {
   color: var(--cream);
   font-size: clamp(0.95rem, 1.15vw, 1.1rem);
   line-height: 1.8;
-}
-
-.slide--hero .display {
-  font-size: clamp(3.2rem, 9vw, 8rem);
-}
-
-/* Тримаємо обидва будинки в кадрі покращеного фото. */
-.slide--hero .slide__media {
-  object-position: center bottom;
-}
-
-.slide--hero .slide__content--center {
-  align-self: flex-start;
-  padding-top: calc(100px + var(--safe-t));
 }
 
 .slide__count {

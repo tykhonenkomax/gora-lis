@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/lora':
+      '@fontsource-variable/golos-text':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource-variable/onest':
@@ -54,8 +54,8 @@ importers:
 
 packages:
 
-  '@fontsource-variable/lora@5.3.0':
-    resolution: {integrity: sha512-2ph8KiZ8Bn141hWuC3ErtpJ+Ui8p2MJQn8TJNRSRmLmnCIOCtHfiBM9R7WLRPeUG/q6hXyHOxWQ8DvRSX+ixvQ==}
+  '@fontsource-variable/golos-text@5.3.0':
+    resolution: {integrity: sha512-D+Evz5yqXYh6tsalc537FS+cPDWn2FTdO8j/K1ZZuFAvA7ib6WnusTiihciq7mMnm6GBo6XTlh0JXPrhBsam2g==}
 
   '@fontsource-variable/onest@5.3.1':
     resolution: {integrity: sha512-xaaw6G4HDB2/RczsWLD/2bnib4ykmQlTlBUN3GOEOiyErilZukQWVJG95h9zwAy0i8KY+QzDa+COPfqhI72Acw==}
@@ -572,7 +572,7 @@ packages:
 
 snapshots:
 
-  '@fontsource-variable/lora@5.3.0': {}
+  '@fontsource-variable/golos-text@5.3.0': {}
 
   '@fontsource-variable/onest@5.3.1': {}
 
