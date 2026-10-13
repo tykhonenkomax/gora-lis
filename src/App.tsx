@@ -28,7 +28,7 @@ export default function App() {
     <>
       <Header />
       {house ? <HousePage key={house.slug} house={house} /> : route.page === 'nearby' ? <Nearby /> : <Home />}
-      {house ? <CallBar page={house.slug} section="booking" /> : <CallBar page="home" section="houses" />}
+      {house ? <CallBar page={house.slug} section="booking" /> : <CallBar page="home" section="booking" />}
     </>
   )
 }
