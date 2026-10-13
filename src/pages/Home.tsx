@@ -123,14 +123,8 @@ function Houses() {
 }
 
 export function Home() {
-  // Ефект «презентації»: кожен слайд прилипає до екрана під час гортання.
-  useEffect(() => {
-    document.documentElement.classList.add('snap')
-    return () => document.documentElement.classList.remove('snap')
-  }, [])
-
   return (
-    <main>
+    <main className="home">
       <Hero />
       <div className="snap-end">
         <Houses />

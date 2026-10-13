@@ -37,9 +37,9 @@ export function HousePage({ house }: { house: House }) {
           <p className="house-hero__price">
             {house.extraGuest && 'від '}<b>{money(house.price)}</b> / ніч · до {house.guests} осіб
           </p>
-          <p>Мінімальне бронювання — 2 ночі · Заїзд з 15:00, виїзд до 12:00</p>
+          <div className="house-hero__terms"><span>Від 2 ночей</span><span>Заїзд з 15:00</span><span>Виїзд до 12:00</span></div>
           {house.extraGuest && (
-            <p>
+            <p className="house-hero__surcharge">
               Базова ціна за {house.extraGuest.included} гостей. За кожного наступного гостя — +{money(house.extraGuest.price)} / ніч.
             </p>
           )}

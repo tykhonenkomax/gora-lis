@@ -7,6 +7,7 @@ export default defineConfig({
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
+    { name: 'safari-mobile', testMatch: /(?:responsive|notifications)\.spec\.ts/, use: { ...devices['iPhone 13'] } },
   ],
   webServer: {
     command: 'pnpm dev --host 127.0.0.1 --port 5180 --strictPort',

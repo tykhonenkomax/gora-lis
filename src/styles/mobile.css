@@ -1,0 +1,222 @@
+/* Мобільний макет: природна прокрутка, фото без текстових перекриттів,
+   спільні відступи й повнорозмірні поля. Завантажується після базових стилів. */
+@media (max-width: 899px) {
+  :root {
+    --header-height: 68px;
+    --gutter: 20px;
+    --radius: 20px;
+  }
+
+  body { font-size: 15px; line-height: 1.65; }
+  .display { font-size: clamp(2.25rem, 8.8vw, 3.6rem); line-height: 1.12; }
+  .display--md { font-size: clamp(2rem, 8vw, 3.4rem); }
+  .display--sm { font-size: clamp(1.8rem, 7.2vw, 2.8rem); }
+  .kicker { gap: 8px; font-size: .65rem; letter-spacing: .14em; line-height: 1.5; }
+  .lead { font-size: 1rem; line-height: 1.65; }
+  .btn { min-height: 50px; padding-inline: 18px; font-size: .9rem; border-radius: 14px; line-height: 1.3; }
+  .section { padding-block: 48px; }
+
+  /* Постійна висота хедера робить переходи до секцій передбачуваними. */
+  .header, .header--solid {
+    min-height: calc(var(--header-height) + var(--safe-t));
+    padding: calc(10px + var(--safe-t)) var(--gutter) 10px;
+    background: rgba(20, 35, 27, .97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+  }
+  .header__logo { font-size: 1.4rem; font-weight: 500; letter-spacing: -.03em; }
+  .header__actions { gap: 8px; }
+  .icon-btn { width: 44px; height: 44px; }
+
+  .menu { padding: calc(84px + var(--safe-t)) var(--gutter) calc(24px + var(--safe-b)); }
+  .menu__brand { left: var(--gutter); }
+  .menu__close { position: fixed; right: var(--gutter); top: calc(12px + var(--safe-t)); }
+  .menu__nav { gap: 0; flex: 0 0 auto; }
+  .menu__nav a {
+    align-items: center;
+    min-height: 54px;
+    padding-block: 12px;
+    font-size: clamp(1.3rem, 5.8vw, 1.9rem);
+    border-bottom: 1px solid rgba(245, 240, 230, .1);
+    line-height: 1.2;
+  }
+  .menu__num { font-size: .65rem; }
+  .menu__foot { margin-top: auto; padding-top: 24px; font-size: .85rem; }
+  .menu__foot .btn { width: 100%; }
+
+  /* Перше фото повністю в кадрі: видно обидва будинки. */
+  .slide--hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 0;
+    padding-top: calc(var(--header-height) + var(--safe-t));
+    background: #14231b;
+  }
+  .slide--hero .slide__media {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    z-index: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1416 / 1111;
+    object-fit: contain;
+    transform: none;
+  }
+  .slide--hero .slide__shade, .slide--hero .scroll-cue { display: none; }
+  .slide--hero .slide__content--center {
+    grid-row: 2;
+    padding: 28px var(--gutter) 36px;
+    align-self: auto;
+    gap: 0;
+  }
+  .slide--hero .display { font-size: clamp(2.8rem, 12vw, 4.2rem); margin: 10px 0 12px; }
+  .slide--hero .lead { margin-bottom: 16px; max-width: 34ch; }
+  .hero-contact { margin-bottom: 20px; gap: 3px; }
+  .hero-contact a { font-size: 1.1rem; font-weight: 500; }
+  .hero-contact span { color: var(--muted); font-size: .8rem; }
+  .slide--hero .btn { width: min(100%, 300px); }
+
+  .houses { padding: 44px 0 40px; }
+  .houses__grid { grid-template-columns: minmax(0, 1fr); padding: 20px var(--gutter) 0; gap: 20px; }
+  .house-card { min-width: 0; min-height: 0; height: auto; aspect-ratio: 4 / 5; border-radius: var(--radius); }
+  .house-card__body { padding: 24px 20px 20px; }
+  .house-card h3 { font-size: clamp(2rem, 8.7vw, 3rem); line-height: 1.1; margin: 8px 0; }
+  .house-card__foot { gap: 12px; margin-top: 16px; padding-top: 14px; font-size: .9rem; }
+  .house-card__foot b { font-size: 1rem; white-space: nowrap; }
+  .house-card__arrow { width: 42px; height: 42px; }
+  .house-card--wide { aspect-ratio: auto; height: clamp(240px, 65vw, 340px); }
+
+  .slide:not(.slide--hero):not(.slide--video) { height: min(80svh, 680px); min-height: 440px; }
+  .slide__content { padding: 44px var(--gutter); }
+  .slide__content > * { opacity: 1; transform: none; }
+  .slide--video { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; height: auto; min-height: 0; }
+  .slide--video .slide__content { padding: 40px var(--gutter); }
+  .slide--video .display { font-size: clamp(2rem, 8vw, 3rem); }
+  .slide__description { margin-top: 24px; padding-top: 20px; font-size: .95rem; line-height: 1.75; }
+  .slide.slide--video .slide__media {
+    grid-column: 1; grid-row: 2; width: 100%; height: auto;
+    aspect-ratio: 576 / 1024; object-fit: contain; object-position: center; padding: 0;
+  }
+
+  /* Сторінка будинку: фото, потім читабельна картка інформації. */
+  .house-hero {
+    display: grid;
+    height: auto;
+    min-height: 0;
+    padding-top: calc(var(--header-height) + var(--safe-t));
+    color: var(--text);
+    background: var(--cream);
+  }
+  .house-hero__img {
+    position: relative; inset: auto; z-index: 0;
+    width: 100%; height: auto; aspect-ratio: 4 / 3;
+    object-fit: cover; animation: none;
+  }
+  .house-hero > .slide__shade { display: none; }
+  .house-hero__content { padding: 24px var(--gutter) 28px; }
+  .house-hero__content .kicker { color: var(--accent); }
+  .house-hero__content .lead { color: var(--muted-dark); }
+  .house-hero__content .back { min-height: 44px; margin-bottom: 16px; padding: 8px 14px; background: #e7e5da; font-size: .85rem; }
+  .house-hero__content .display { font-size: clamp(2.4rem, 10vw, 3.8rem); }
+  .house-hero__price { padding-top: 20px; margin-top: 20px; border-top: 1px solid var(--line); font-size: .9rem; }
+  .house-hero__price b { font-size: 1.5rem; color: #294936; white-space: nowrap; }
+  .house-hero__terms { display: grid; gap: 4px; font-size: .85rem; color: var(--muted-dark); }
+  .house-hero__surcharge { margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: #e9eddf; font-size: .85rem; }
+  .chips { flex-wrap: wrap; overflow: visible; gap: 8px; padding: 0 var(--gutter) 8px; }
+  .chip { padding: 8px 12px; min-height: 40px; font-size: .8rem; }
+  .intro-text { font-family: var(--body); font-size: 1.05rem; line-height: 1.7; max-width: 60ch; }
+  .carousel { gap: 12px; padding: 22px var(--gutter); scroll-padding-inline: var(--gutter); }
+  .carousel__item { flex-basis: 88%; border-radius: 16px; }
+  .checklist { gap: 12px; font-size: .95rem; }
+  .amenities { gap: 10px; }
+  .amenities li { min-width: 0; padding: 14px 12px; font-size: .85rem; }
+  .banner { display: grid; min-height: 0; background: #14231b; }
+  .banner__img { position: relative; inset: auto; z-index: 0; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .banner > .slide__shade { display: none; }
+  .banner__content { width: 100%; padding: 32px var(--gutter) 40px; gap: 16px; }
+  .banner__text, .banner__note { font-size: .9rem; line-height: 1.7; }
+  .next-house { height: 420px; min-height: 0; }
+  .next-house__body { padding: 28px var(--gutter); }
+
+  /* Календар, видимі межі полів і місце для системного вибору дат. */
+  .availability .display { max-width: 100%; }
+  .house-switch { gap: 6px; margin: 24px 0 16px; padding: 5px; border: 1px solid #d4d9cc; background: #e8ecdf; border-radius: 16px; }
+  .house-switch button { max-width: none; min-width: 0; min-height: 48px; border: 0; border-radius: 11px; font-size: .95rem; }
+  .availability__navigation { justify-content: space-between; margin: 16px 0; }
+  .calendar-button { min-height: 46px; font-size: .9rem; padding: 10px 14px; }
+  .availability__months { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+  .availability__months .booking-calendar { flex: 0 0 94%; scroll-snap-align: start; border-radius: 18px; padding: 16px 10px; }
+  .booking-calendar__nav h3 { font-family: var(--body); font-weight: 600; font-size: 1rem; letter-spacing: -.02em; }
+  .booking-calendar__grid { gap: 4px; }
+  .booking-calendar__day { min-height: 44px; font-size: .85rem; border-radius: 8px; }
+  .booking-calendar__legend { display: grid; gap: 8px; font-size: .8rem; margin-top: 12px; }
+  .calendar-key { width: 26px; height: 26px; border-radius: 7px; }
+  .availability__booking { margin-top: 28px; padding: 28px 20px; border-radius: 20px; }
+  .availability__booking .muted { font-size: .9rem; }
+  .booking__call { width: 100%; margin: 20px 0 24px; font-size: .85rem; padding-inline: 12px; }
+  .booking__form { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .booking__form > *, .booking__fields > * { min-width: 0; }
+  .field { font-size: .85rem; gap: 8px; }
+  .field input, .field select { height: 54px; min-width: 0; max-width: 100%; border-radius: 12px; padding-inline: 12px; background: #26382d; border-color: #647166; }
+  .field input[type="date"] { display: block; min-height: 54px; width: 100%; }
+  .field input[type="date"]::-webkit-date-and-time-value { text-align: left; min-height: 1.5em; }
+  .field--check { height: auto; min-height: 50px; padding: 12px; border: 1px solid #647166; border-radius: 12px; font-size: .9rem; }
+  .field--check input { width: 22px; height: 22px; flex-shrink: 0; padding: 0; }
+  .booking__house-summary { font-size: .9rem; padding-bottom: 14px; }
+  .booking__privacy { font-size: .78rem; }
+  .booking__done h3 { font-size: 1.65rem; line-height: 1.2; }
+  .booking__done pre { padding: 12px; font-size: .85rem; }
+  .booking__total { font-size: .9rem; padding: 14px; }
+  .faq summary { font-size: .95rem; line-height: 1.45; padding-block: 20px; }
+  .faq details p { font-size: .9rem; line-height: 1.75; }
+
+  .admin-panel { padding: 24px 0 40px; }
+  .admin-panel__layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .admin-panel__bookings li { flex-direction: column; align-items: stretch; padding: 16px; }
+  .admin-panel__form { padding: 20px; }
+  .admin-panel__list-heading h2 { font-size: 1.2rem; }
+  .admin-panel__cancel .calendar-button { flex: 1; }
+  .admin-panel__top .calendar-button { padding-inline: 12px; }
+
+  .filters { top: calc(var(--header-height) + var(--safe-t)); padding-inline: var(--gutter); }
+  .place h2 { font-size: 1.7rem; line-height: 1.2; }
+  .place__text { font-size: .95rem; }
+  .place__links .btn { flex: 1 1 auto; }
+  .footer { padding: 40px 0 calc(112px + var(--safe-b)); }
+  .footer__brand { font-size: 1.8rem; letter-spacing: -.035em; }
+  .footer__phone { font-size: 1.2rem; }
+  .footer__col { gap: 14px; }
+  .footer__map { width: calc(100% - var(--gutter) * 2); border-radius: 16px; }
+  .footer__addr { font-size: .9rem; }
+
+  .callbar {
+    inset: auto 10px calc(8px + var(--safe-b));
+    grid-template-columns: 1fr 1.4fr;
+    padding: 8px;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 20px;
+    background: rgba(20, 35, 27, .97);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, .2);
+    transition: opacity .2s, transform .2s;
+  }
+  .callbar .btn { padding-inline: 10px; min-height: 48px; font-size: .85rem; border-radius: 12px; }
+  .callbar .btn svg { width: 17px; height: 17px; }
+  body:has(.booking__form input:focus, .booking__form select:focus) .callbar { transform: translateY(140%); opacity: 0; pointer-events: none; }
+}
+
+@media (max-width: 380px) {
+  :root { --gutter: 16px; }
+  .availability__booking { padding: 24px 16px; }
+  .availability__months .booking-calendar { flex-basis: 100%; }
+  .house-card__body { padding: 20px 16px; }
+  .house-card__foot { font-size: .8rem; }
+  .callbar .btn { font-size: .78rem; padding-inline: 8px; gap: 6px; }
+  .menu__nav a { min-height: 48px; padding-block: 10px; }
+}
+
+@media (max-width: 420px) {
+  .amenities { grid-template-columns: minmax(0, 1fr); }
+}

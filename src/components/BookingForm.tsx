@@ -108,11 +108,12 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
         <select value={selected.slug} onChange={(e) => (onHouseChange ?? setSlug)(e.target.value as House['slug'])}>
           {houses.map((h) => (
             <option key={h.slug} value={h.slug}>
-              {h.name} — до {h.guests} осіб, {h.extraGuest && 'від '}{money(h.price)}/ніч
+              {h.name}
             </option>
           ))}
         </select>
       </label>
+      <div className="booking__house-summary field--full"><span>{selected.extraGuest && 'від '}<strong>{money(selected.price)}</strong> / ніч</span><span>До {selected.guests} гостей</span></div>
       <label className="field">
         <span>Заїзд</span>
         <input type="date" required min={todayKey()} value={checkIn} onChange={(e) => { setCheckIn(e.target.value); if (checkOut < earliestCheckout(e.target.value)) setCheckOut('') }} />
