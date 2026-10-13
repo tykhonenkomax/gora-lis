@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { TEST_PRICING } from './pricing-fixture'
 import { dateKey, shiftMonth, monthStart, parseDay, todayKey } from '../src/data/bookingDates'
 
 const next = dateKey(shiftMonth(monthStart(parseDay(todayKey())), 1)).slice(0, 7)
@@ -14,6 +15,7 @@ async function mockBackend(page: Page, options: { denied?: boolean; unavailable?
     const request = route.request()
     const url = new URL(request.url())
     const json = (body: unknown, status = 200) => route.fulfill({ status, json: body })
+    if (url.pathname.endsWith('/rpc/get_pricing')) return json(TEST_PRICING)
     if (url.pathname.includes('/auth/v1/token')) {
       expect(request.postDataJSON().email).toBe(user.email)
       return json({ access_token: jwt, refresh_token: 'test-refresh', token_type: 'bearer', expires_in: 3600, user })

@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { createBookingHandler, type BookingDependencies, type Channel } from '../supabase/functions/_shared/bookingHandler'
-import { parseRequest, requestTotal, requestMessage } from '../supabase/functions/_shared/bookingRules'
+import { parseRequest, requestMessage } from '../supabase/functions/_shared/bookingRules'
+import { quotePrice } from '../supabase/functions/_shared/pricing'
+import { TEST_PRICING } from './pricing-fixture'
 
 const payload = { house: 'zrub', checkIn: '2090-05-10', checkOut: '2090-05-12', guests: 5, withChan: true, name: 'Олена', phone: '0967773015' }
 const requestId = '11111111-1111-4111-8111-111111111111'
@@ -14,7 +16,7 @@ function setup() {
   const marked = { telegram_sent: false, email_sent: false }
   const deps: BookingDependencies = {
     origins: [origin], ready: () => true,
-    claim: async () => ({ ...marked }),
+    claim: async () => ({ ...marked, quote: quotePrice(TEST_PRICING, parseRequest(payload)) }),
     send: async channel => { sent.push(channel) },
     markSent: async (_id, channel) => { marked[`${channel}_sent`] = true },
     release: async () => {},
@@ -24,9 +26,10 @@ function setup() {
 
 test('server recalculates price and formats plain-text request', () => {
   const valid = parseRequest({ ...payload, total: 1, nightlyPrice: 1 })
-  expect(requestTotal(valid)).toBe(11000)
-  expect(requestMessage(valid, requestId)).toContain('Ночей: 2 · Гостей: 5')
-  expect(requestMessage(valid, requestId)).toContain(requestId)
+  const quote = quotePrice(TEST_PRICING, valid)
+  expect(quote.total).toBe(11000)
+  expect(requestMessage(valid, requestId, quote)).toContain('Ночей: 2 · Гостей: 5')
+  expect(requestMessage(valid, requestId, quote)).toContain(requestId)
   expect(() => parseRequest({ ...payload, guests: 7 })).toThrow()
   expect(() => parseRequest({ ...payload, name: 'Олена\nНова ціна: 1' })).toThrow()
   expect(() => parseRequest({ ...payload, phone: '0967773015\n' })).toThrow()
@@ -96,6 +99,7 @@ test('rate limits and active processing return actionable responses', async () =
 test('form retries same request after server error and only then shows success', async ({ page }) => {
   const requests: Record<string, unknown>[] = []
   await page.route('https://booking-test.invalid/**', async route => {
+    if (route.request().url().endsWith('/rpc/get_pricing')) return route.fulfill({ json: TEST_PRICING })
     if (route.request().url().includes('/functions/v1/submit-booking')) {
       const body = route.request().postDataJSON()
       requests.push(body)
@@ -122,7 +126,7 @@ test('form retries same request after server error and only then shows success',
 })
 
 test('contacts and house-specific FAQs show the agreed information', async ({ page }) => {
-  await page.route('https://booking-test.invalid/**', route => route.fulfill({ json: [] }))
+  await page.route('https://booking-test.invalid/**', route => route.fulfill({ json: route.request().url().endsWith('/rpc/get_pricing') ? TEST_PRICING : [] }))
   await page.goto('panorama')
   await expect(page.locator('.faq').getByText('Чи буде світло під час відключень?')).toHaveCount(0)
   await page.locator('.faq').getByText('О котрій заїзд і виїзд?').click()
@@ -136,6 +140,7 @@ test('contacts and house-specific FAQs show the agreed information', async ({ pa
 test('home form follows calendar house selection, preserves dates and sends the chosen house', async ({ page }) => {
   const requests: Record<string, unknown>[] = []
   await page.route('https://booking-test.invalid/**', async route => {
+    if (route.request().url().endsWith('/rpc/get_pricing')) return route.fulfill({ json: TEST_PRICING })
     if (route.request().url().includes('/functions/v1/submit-booking')) {
       const body = route.request().postDataJSON()
       requests.push(body)

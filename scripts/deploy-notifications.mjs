@@ -20,11 +20,15 @@ async function management(path, body) {
     method: 'POST', headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(body), signal: AbortSignal.timeout(30000),
   })
-  if (!response.ok) throw new Error(`Supabase ${path}: HTTP ${response.status}. Перевірте доступ до проєкту.`)
+  if (!response.ok) {
+    const detail = await response.json().catch(() => ({}))
+    throw new Error(`Supabase ${path}: HTTP ${response.status}. ${detail.message ?? 'Перевірте доступ до проєкту.'}`)
+  }
 }
 
 try {
   await management('database/query', { query: readFileSync('supabase/notifications.sql', 'utf8') })
+  await management('database/query', { query: readFileSync('supabase/pricing.sql', 'utf8') })
   console.log('Схему заявок та правило двох ночей застосовано.')
   await management('secrets', secretNames.filter(name => process.env[name]).map(name => ({ name, value: process.env[name] })))
   console.log('Серверні секрети налаштовано.')

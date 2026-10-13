@@ -9,11 +9,15 @@ import { Faq } from '../components/Faq'
 import { Footer } from '../components/Footer'
 import { href } from '../router'
 import { Availability } from '../components/Availability'
+import { HousePrice } from '../components/HousePrice'
+import { usePricing } from '../data/pricing'
 
 const money = (n: number) => `${n.toLocaleString('uk-UA')} грн`
 
 export function HousePage({ house }: { house: House }) {
   const other = houses.find((h) => h.slug !== house.slug)
+  const pricing = usePricing()
+  const tariff = pricing.data?.houses.find(row => row.house_slug === house.slug)
 
   useEffect(() => {
     document.title = `${house.name} — ${brand.name}`
@@ -35,12 +39,12 @@ export function HousePage({ house }: { house: House }) {
           <h1 className="display">{house.name}</h1>
           <p className="lead">{house.subtitle}</p>
           <p className="house-hero__price">
-            {house.extraGuest && 'від '}<b>{money(house.price)}</b> / ніч · до {house.guests} осіб
+            <HousePrice house={house} /> · до {house.guests} осіб
           </p>
           <div className="house-hero__terms"><span>Від 2 ночей</span><span>Заїзд з 15:00</span><span>Виїзд до 12:00</span></div>
-          {house.extraGuest && (
+          {house.extraGuest && tariff && (
             <p className="house-hero__surcharge">
-              Базова ціна за {house.extraGuest.included} гостей. За кожного наступного гостя — +{money(house.extraGuest.price)} / ніч.
+              Базова ціна за {house.extraGuest.included} гостей. За кожного наступного гостя — +{money(tariff.extra_guest_price)} / ніч.
             </p>
           )}
         </div>

@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header hideBrand={!house && route.page !== 'nearby'} />
       {house ? <HousePage key={house.slug} house={house} /> : route.page === 'nearby' ? <Nearby /> : <Home />}
       {house ? <CallBar page={house.slug} section="booking" /> : <CallBar page="home" section="booking" />}
     </>

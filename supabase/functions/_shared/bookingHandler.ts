@@ -1,7 +1,8 @@
-import { parseRequest, requestMessage, requestTotal, type BookingRequest } from './bookingRules.ts'
+import { parseRequest, requestMessage, type BookingRequest } from './bookingRules.ts'
+import type { PriceQuote } from './pricing.ts'
 
 export type Channel = 'telegram' | 'email'
-export type Claim = { error?: 'id_conflict' | 'processing' | 'rate_limit' | 'occupied'; telegram_sent: boolean; email_sent: boolean }
+export type Claim = { error?: 'id_conflict' | 'processing' | 'rate_limit' | 'occupied'; telegram_sent: boolean; email_sent: boolean; quote?: PriceQuote }
 export type BookingDependencies = {
   origins: string[]
   ready: () => boolean
@@ -54,7 +55,8 @@ export function createBookingHandler(deps: BookingDependencies) {
         }
         return reply(state.error === 'rate_limit' ? 429 : 409, { error: messages[state.error] })
       }
-      const text = requestMessage(payload, id)
+      if (!state.quote || !Number.isFinite(state.quote.total)) throw new Error('Quote unavailable')
+      const text = requestMessage(payload, id, state.quote)
       const outcomes = await Promise.allSettled((['telegram', 'email'] as const).map(async channel => {
         if (state[`${channel}_sent`]) return
         await deps.send(channel, text, id)
@@ -64,7 +66,7 @@ export function createBookingHandler(deps: BookingDependencies) {
       if (outcomes.some(result => result.status === 'rejected')) {
         return reply(503, { error: 'Заявку збережено, але не всі повідомлення вдалося надіслати. Повторіть надсилання або зателефонуйте: 096 777 30 15.' })
       }
-      return reply(200, { ok: true, requestId: id, total: requestTotal(payload) })
+      return reply(200, { ok: true, requestId: id, total: state.quote.total })
     } catch {
       return reply(503, { error: 'Не вдалося підтвердити надсилання. Повторіть спробу або зателефонуйте: 096 777 30 15.' })
     }

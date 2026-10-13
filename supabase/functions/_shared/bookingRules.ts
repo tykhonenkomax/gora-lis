@@ -1,8 +1,10 @@
+import type { PriceQuote } from './pricing.ts'
+
 export const MIN_NIGHTS = 2
 export const CHAN_PRICE = 2000
 export const HOUSE_PRICING = {
-  zrub: { name: 'Atmosfera', price: 4000, guests: 6, includedGuests: 4, extraGuestPrice: 500 },
-  panorama: { name: 'Panorama', price: 3000, guests: 4, includedGuests: 4, extraGuestPrice: 0 },
+  zrub: { name: 'Atmosfera', guests: 6, includedGuests: 4 },
+  panorama: { name: 'Panorama', guests: 4, includedGuests: 4 },
 } as const
 
 export function validDate(value: string): boolean {
@@ -57,20 +59,16 @@ export function parseRequest(value: unknown, today = kyivToday()): BookingReques
   return { house: body.house, checkIn: body.checkIn, checkOut: body.checkOut, guests: body.guests, withChan: body.withChan, name: body.name.trim(), phone: body.phone.trim() }
 }
 
-export function requestTotal(request: BookingRequest): number {
-  const house = HOUSE_PRICING[request.house]
-  const nightly = house.price + Math.max(0, request.guests - house.includedGuests) * house.extraGuestPrice
-  return nightly * stayNights(request.checkIn, request.checkOut) + (request.withChan ? CHAN_PRICE : 0)
-}
-
-export function requestMessage(request: BookingRequest, id: string): string {
+export function requestMessage(request: BookingRequest, id: string, quote: PriceQuote): string {
   return [
     `🏡 Нова заявка · ${HOUSE_PRICING[request.house].name}`,
     `📅 Заїзд: ${request.checkIn} (з 15:00)`,
     `📅 Виїзд: ${request.checkOut} (до 12:00)`,
     `🌙 Ночей: ${stayNights(request.checkIn, request.checkOut)} · Гостей: ${request.guests}`,
     `👤 ${request.name}`, `📞 ${request.phone}`, `🛁 Чан: ${request.withChan ? 'так' : 'ні'}`,
-    `💰 Орієнтовно: ${requestTotal(request).toLocaleString('uk-UA')} грн`,
+    `💰 Проживання: ${quote.accommodation.toLocaleString('uk-UA')} грн`,
+    ...(quote.chan ? [`Чан: ${quote.chan.toLocaleString('uk-UA')} грн`] : []),
+    `Разом орієнтовно: ${quote.total.toLocaleString('uk-UA')} грн`,
     '', 'Очікує підтвердження власником. Дати ще не заблоковано.', `Номер заявки: ${id}`,
   ].join('\n')
 }

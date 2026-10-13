@@ -4,6 +4,8 @@ import { chan, contacts, houses, type House } from '../data/site'
 import { bookingClient } from '../data/bookingApi'
 import { earliestCheckout, rangeError, todayKey } from '../data/bookingDates'
 import { parseRequest } from '../../supabase/functions/_shared/bookingRules'
+import { nightPrice, quotePrice } from '../../supabase/functions/_shared/pricing'
+import { refreshPricing, usePricing } from '../data/pricing'
 
 const DAY = 24 * 60 * 60 * 1000
 const money = (n: number) => `${n.toLocaleString('uk-UA')} грн`
@@ -28,14 +30,17 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
   const [serverTotal, setServerTotal] = useState<number | null>(null)
   const [website, setWebsite] = useState('')
   const attempt = useRef<{ signature: string; id: string } | null>(null)
+  const pricing = usePricing()
 
   const selected = onHouseChange ? house : houses.find((h) => h.slug === slug) ?? house
   const guestCount = Math.min(guests, selected.guests)
   const nights = checkIn && checkOut ? Math.max(0, Math.round((+new Date(checkOut) - +new Date(checkIn)) / DAY)) : 0
-  const nightlyPrice = selected.price + (selected.extraGuest
-    ? Math.max(0, guestCount - selected.extraGuest.included) * selected.extraGuest.price
-    : 0)
-  const total = nights * nightlyPrice + (withChan ? chan.price : 0)
+  const tariff = pricing.data?.houses.find(row => row.house_slug === selected.slug)
+  const quote = pricing.data && !rangeError(checkIn, checkOut)
+    ? quotePrice(pricing.data, { house: selected.slug, checkIn, checkOut, guests: guestCount, withChan }) : null
+  const nightlyGroups = new Map<number, number>()
+  quote?.nights.forEach(night => nightlyGroups.set(night.price, (nightlyGroups.get(night.price) ?? 0) + 1))
+  const displayPrice = pricing.data ? nightPrice(pricing.data, selected.slug, checkIn || todayKey()) : null
 
   const message = [
     `Заявка: ${selected.name}`,
@@ -56,6 +61,7 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
     try {
       const invalid = rangeError(checkIn, checkOut)
       if (invalid) throw new Error(invalid)
+      if (!pricing.data) throw new Error('Не вдалося завантажити актуальні ціни. Спробуйте ще раз або зателефонуйте.')
       const payload = parseRequest({ house: selected.slug, checkIn, checkOut, guests: guestCount, withChan, name, phone })
       if (!bookingClient) throw new Error('Надсилання тимчасово недоступне. Зателефонуйте нам.')
       const signature = JSON.stringify(payload)
@@ -113,7 +119,7 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
           ))}
         </select>
       </label>
-      <div className="booking__house-summary field--full"><span>{selected.extraGuest && 'від '}<strong>{money(selected.price)}</strong> / ніч</span><span>До {selected.guests} гостей</span></div>
+      <div className="booking__house-summary field--full"><span>{displayPrice !== null ? <>від <strong>{money(displayPrice)}</strong> / ніч</> : pricing.loading ? 'Завантажуємо ціну…' : 'Ціну уточнюйте телефоном'}</span><span>До {selected.guests} гостей</span></div>
       <label className="field">
         <span>Заїзд</span>
         <input type="date" required min={todayKey()} value={checkIn} onChange={(e) => { setCheckIn(e.target.value); if (checkOut < earliestCheckout(e.target.value)) setCheckOut('') }} />
@@ -138,10 +144,10 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
           ))}
         </select>
       </label>
-      {selected.extraGuest && (
+      {selected.extraGuest && tariff && (
         <p className="field--full">
-          {money(selected.price)} / ніч за {selected.extraGuest.included} гостей.
-          {' '}За кожного наступного гостя — +{money(selected.extraGuest.price)} / ніч.
+          Ціна за {selected.extraGuest.included} гостей залежить від дат.
+          {' '}За кожного наступного гостя — +{money(tariff.extra_guest_price)} / ніч.
         </p>
       )}
       <label className="field field--check">
@@ -165,15 +171,17 @@ export function BookingForm({ house, onHouseChange, onSendingChange }: {
           onChange={(e) => setPhone(e.target.value)}
         />
       </label>
-      {nights > 0 && (
-        <p className="booking__total field--full">
-          {nights} ноч. × {money(nightlyPrice)}
-          {withChan ? ` + чан ${money(chan.price)}` : ''} = <b>{money(total)}</b>
-        </p>
+      {quote && (
+        <div className="booking__total field--full" aria-live="polite">
+          {[...nightlyGroups].map(([price, count]) => <p key={price}>{count} ноч. × {money(price)}</p>)}
+          {withChan && <p>Чан: {money(chan.price)}</p>}
+          <p>Разом орієнтовно: <b>{money(quote.total)}</b></p>
+        </div>
       )}
+      {pricing.error && <p className="field--full booking__error" role="status">{pricing.error} <button className="link" type="button" onClick={() => void refreshPricing()}>Оновити ціни</button></p>}
       <p className="field--full booking__privacy">Натискаючи кнопку, ви передаєте ім’я, телефон і дати власнику для опрацювання заявки.</p>
       {error && <p className="field--full booking__error" role="alert">{error} <a href={`tel:${contacts.phone}`}>{contacts.phoneLabel}</a></p>}
-      <button className="btn btn--accent field--full" type="submit">
+      <button className="btn btn--accent field--full" type="submit" disabled={!pricing.data}>
         {sending ? 'Надсилаємо…' : 'Надіслати заявку'}
       </button>
       </fieldset>

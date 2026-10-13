@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { ArrowRight, Phone } from 'lucide-react'
-import { brand, contacts, home, houses, type Slide } from '../data/site'
+import { asset, brand, contacts, home, houses, type Slide } from '../data/site'
+import { HousePrice } from '../components/HousePrice'
 import { nearby } from '../data/nearby'
 import { Img } from '../components/Img'
 import { useInView } from '../components/useInView'
@@ -12,7 +13,7 @@ function Hero() {
   return (
     <section className="hero slide--hero" id="top" aria-labelledby="hero-title">
       <div className="hero__copy">
-        <p className="hero__eyebrow"><span /> Ваш відпочинок у Карпатах</p>
+        <img className="hero__logo" src={asset('gora.webp')} width="960" height="348" alt="Гори та два будинки Gora&Lis" />
         <h1 className="hero__title" id="hero-title">{brand.name}</h1>
         <p className="hero__tagline">Ближче до природи.<br />Ближче до себе.</p>
         <p className="hero__description">Два будинки у Верховині — для повільних ранків, теплих вечорів і відпочинку в чані просто неба.</p>
@@ -96,7 +97,7 @@ function Houses() {
               <p>{h.subtitle}</p>
               <div className="house-card__foot">
                 <span>
-                  від <b>{h.price.toLocaleString('uk-UA')} грн</b> / ніч
+                  <HousePrice house={h} />
                 </span>
                 <span className="house-card__arrow">
                   <ArrowRight size={20} />

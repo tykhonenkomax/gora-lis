@@ -2,7 +2,7 @@
 // Щоб додати фото: покласти `<name>-lg.webp` (≈1600px) і `<name>-sm.webp` (≈720px)
 // у public/photos/<папка>/ і додати рядок `photo('<папка>/<name>', 'Опис')` у потрібний список.
 
-import { CHAN_PRICE, HOUSE_PRICING } from '../../supabase/functions/_shared/bookingRules'
+import { CHAN_PRICE } from '../../supabase/functions/_shared/bookingRules'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -109,8 +109,7 @@ export type House = {
   name: string
   subtitle: string
   guests: number
-  price: number
-  extraGuest?: { included: number; price: number }
+  extraGuest?: { included: number }
   cover: Photo
   facts: { icon: string; label: string }[]
   intro: string
@@ -124,8 +123,7 @@ export const houses: House[] = [
     name: 'Atmosfera',
     subtitle: 'Затишний будинок з каміном',
     guests: 6,
-    price: HOUSE_PRICING.zrub.price,
-    extraGuest: { included: HOUSE_PRICING.zrub.includedGuests, price: HOUSE_PRICING.zrub.extraGuestPrice },
+    extraGuest: { included: 4 },
     cover: photo('atmosfera/ground-floor-1', 'Вітальня з каміном у Atmosfera'),
     facts: [
       { icon: 'users', label: 'до 6 осіб' },
@@ -180,7 +178,6 @@ export const houses: House[] = [
     name: 'Panorama',
     subtitle: 'А-фрейм з видом на гори',
     guests: 4,
-    price: HOUSE_PRICING.panorama.price,
     cover: photo('panorama/exterior-10', 'А-фрейм Panorama — вигляд зовні'),
     facts: [
       { icon: 'users', label: 'до 4 осіб' },

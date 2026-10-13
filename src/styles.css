@@ -35,6 +35,10 @@
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
 .admin-panel__top { margin-bottom: 32px; }
+.admin-tabs { display: flex; gap: 12px; margin: 24px 0 28px; }
+.admin-tabs button { flex: 1; max-width: 280px; }
+.admin-tabs button[aria-pressed="true"] { background: #263f31; color: white; border-color: #263f31; }
+.booking__error .link { color: inherit; }
 .admin-panel__top a { justify-content: flex-start; }
 .house-switch { display: flex; gap: 12px; margin: 28px 0; }
 .house-switch button {
@@ -313,6 +317,7 @@ summary:focus-visible {
 .header__actions {
   display: flex;
   gap: 10px;
+  margin-left: auto;
 }
 
 .menu {

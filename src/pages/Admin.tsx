@@ -6,6 +6,18 @@ import { earliestCheckout, formatDay, monthStart, nightsBetween, overlaps, parse
 import { brand, houses, type House } from '../data/site'
 import { BookingCalendar, HouseSwitch } from '../components/Availability'
 import { href } from '../router'
+import { PricingManager } from '../components/PricingManager'
+
+function OwnerPanel() {
+  const [tab, setTab] = useState<'bookings' | 'prices'>('bookings')
+  return <>
+    <nav className="admin-tabs" aria-label="Розділи панелі власника">
+      <button className="calendar-button" aria-pressed={tab === 'bookings'} onClick={() => setTab('bookings')}>Бронювання</button>
+      <button className="calendar-button" aria-pressed={tab === 'prices'} onClick={() => setTab('prices')}>Ціни</button>
+    </nav>
+    {tab === 'bookings' ? <ReservationManager /> : <PricingManager />}
+  </>
+}
 
 function ReservationManager() {
   const [slug, setSlug] = useState<House['slug']>('zrub')
@@ -199,7 +211,7 @@ export function Admin() {
             <label>Пароль<input type="password" required autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} /></label>
             <button className="calendar-button calendar-button--primary" disabled={busy}>{busy ? 'Входимо…' : 'Увійти'}</button>
           </form>
-        ) : access === 'checking' ? <p role="status">Перевіряємо доступ…</p> : access === 'allowed' ? <ReservationManager key={session.user.id} /> : <div className="admin-panel__setup"><p>{access === 'denied' ? 'Цей акаунт не має доступу власника. Увійдіть іншим акаунтом або зверніться до того, хто налаштовує сайт.' : 'Не вдалося перевірити доступ. Перевірте підключення.'}</p><button className="calendar-button" onClick={() => setRetry(value => value + 1)}>Перевірити ще раз</button></div>}
+        ) : access === 'checking' ? <p role="status">Перевіряємо доступ…</p> : access === 'allowed' ? <OwnerPanel key={session.user.id} /> : <div className="admin-panel__setup"><p>{access === 'denied' ? 'Цей акаунт не має доступу власника. Увійдіть іншим акаунтом або зверніться до того, хто налаштовує сайт.' : 'Не вдалося перевірити доступ до панелі. Перевірте підключення.'}</p><button className="calendar-button" onClick={() => setRetry(value => value + 1)}>Перевірити ще раз</button></div>}
         {error && <p className="admin-panel__error" role="alert">{error}</p>}
       </div>
     </main>

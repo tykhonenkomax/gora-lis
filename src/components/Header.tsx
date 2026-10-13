@@ -3,7 +3,7 @@ import { Menu, Phone, X } from 'lucide-react'
 import { brand, contacts, houses } from '../data/site'
 import { href } from '../router'
 
-export function Header() {
+export function Header({ hideBrand = false }: { hideBrand?: boolean }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -54,9 +54,9 @@ export function Header() {
   return (
     <>
       <header className={`header ${scrolled ? 'header--solid' : ''}`}>
-        <a className="header__logo" href={href('home')} onClick={close}>
+        {!hideBrand && <a className="header__logo" href={href('home')} onClick={close}>
           {brand.name}
-        </a>
+        </a>}
         <div className="header__actions">
           <a className="icon-btn" href={`tel:${contacts.phone}`} aria-label="Подзвонити">
             <Phone size={20} />

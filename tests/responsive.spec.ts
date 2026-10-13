@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test'
+import { TEST_PRICING } from './pricing-fixture'
 
 test.beforeEach(async ({ page }) => {
-  await page.route('https://booking-test.invalid/**', route => route.fulfill({ json: [] }))
+  await page.route('https://booking-test.invalid/**', route => route.fulfill({ json: route.request().url().endsWith('/rpc/get_pricing') ? TEST_PRICING : [] }))
 })
 
 test('main pages and booking inputs fit narrow and wide viewports', async ({ page }, info) => {
