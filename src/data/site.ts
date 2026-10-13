@@ -2,6 +2,8 @@
 // Щоб додати фото: покласти `<name>-lg.webp` (≈1600px) і `<name>-sm.webp` (≈720px)
 // у public/photos/<папка>/ і додати рядок `photo('<папка>/<name>', 'Опис')` у потрібний список.
 
+import { CHAN_PRICE, HOUSE_PRICING } from '../../supabase/functions/_shared/bookingRules'
+
 const BASE = import.meta.env.BASE_URL
 
 export type Photo = { sm: string; lg: string; alt: string }
@@ -18,9 +20,9 @@ export const LOREM =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.'
 
 export const contacts = {
-  // TODO: справжній номер
-  phone: '+380000000000',
-  phoneLabel: '+380 XX XXX XX XX',
+  phone: '+380967773015',
+  phoneLabel: '096 777 30 15',
+  email: 'GoraLis@ukr.net',
   address: 'вул. Поповича, 47а, Верховина, Івано-Франківська обл.',
   mapUrl: 'https://maps.app.goo.gl/oed5A6aHhjnjWsEH7',
   mapEmbedUrl: 'https://www.google.com/maps?cid=16964944946448473099&output=embed',
@@ -90,7 +92,7 @@ export const home = {
 export const chan = {
   title: 'Чан',
   lead: 'Для повного релаксу насолодіться відпочинком у чані!',
-  price: 2000,
+  price: CHAN_PRICE,
   photo: photo('panorama/exterior-2', 'Чан на території біля Panorama'),
   paragraphs: [
     'Після Вашого замовлення в чан набирається вода, після чого за допомогою дров вона нагрівається до температури приблизно 38–39 °C. Чан обладнаний системою «джакузі», яка додасть приємних відчуттів, та підсвіткою.',
@@ -122,8 +124,8 @@ export const houses: House[] = [
     name: 'Atmosfera',
     subtitle: 'Затишний будинок з каміном',
     guests: 6,
-    price: 4000,
-    extraGuest: { included: 4, price: 500 },
+    price: HOUSE_PRICING.zrub.price,
+    extraGuest: { included: HOUSE_PRICING.zrub.includedGuests, price: HOUSE_PRICING.zrub.extraGuestPrice },
     cover: photo('atmosfera/ground-floor-1', 'Вітальня з каміном у Atmosfera'),
     facts: [
       { icon: 'users', label: 'до 6 осіб' },
@@ -136,7 +138,7 @@ export const houses: House[] = [
       {
         title: 'Перший поверх',
         text: 'Вітальня з кухнею, санвузол та тераса з деревʼяними лежаками, підвісним кріслом-коконом і гамаком.',
-        items: ['Кутовий диван', 'Обідній стіл', 'Камін', 'Санвузол з душем', 'Тераса з лежаками', 'Крісло-кокон і гамак'],
+        items: ['Кутовий диван', 'Обідній стіл', 'Камін з розведенням теплого повітря по всіх приміщеннях', 'Санвузол з душем', 'Тераса з лежаками', 'Крісло-кокон і гамак'],
         photos: [
           photo('atmosfera/ground-floor-1', 'Atmosfera: вітальня з каміном'),
           photo('atmosfera/ground-floor-2', 'Atmosfera: кухня та сходи'),
@@ -178,7 +180,7 @@ export const houses: House[] = [
     name: 'Panorama',
     subtitle: 'А-фрейм з видом на гори',
     guests: 4,
-    price: 3000,
+    price: HOUSE_PRICING.panorama.price,
     cover: photo('panorama/exterior-10', 'А-фрейм Panorama — вигляд зовні'),
     facts: [
       { icon: 'users', label: 'до 4 осіб' },
@@ -233,10 +235,11 @@ export const houses: House[] = [
 
 export const faq = [
   { q: 'Як забронювати?', a: `Зателефонуйте нам за номером ${contacts.phoneLabel} або залиште заявку на сторінці будинку — ми передзвонимо.` },
-  { q: 'О котрій заїзд і виїзд?', a: LOREM },
+  { q: 'О котрій заїзд і виїзд?', a: 'Заселення — з 15:00, виселення — до 12:00.' },
+  { q: 'На скільки ночей можна забронювати?', a: 'Мінімальне бронювання — 2 ночі.' },
   { q: 'Скільки коштує чан і як його замовити?', a: `Вартість — ${chan.price} грн. ${chan.note}` },
-  { q: 'Чи буде світло під час відключень?', a: 'Так, будинок Atmosfera обладнаний інвертором 7 кВт.' },
+  { q: 'Чи буде світло під час відключень?', a: 'Так, будинок Atmosfera обладнаний інвертором 7 кВт.', house: 'zrub' },
   { q: 'Як до вас доїхати?', a: `Наша адреса: ${contacts.address}. Біля дитячого оздоровчого табору поверніть з асфальтованої дороги та проїдьте ще 500 метрів ґрунтово-гравійною дорогою. Перед будинком є підйом, який за звичайних умов подолає будь-який автомобіль. Взимку, коли випадає багато снігу, піднятися зможе лише автомобіль із повним приводом. У такому разі машину можна залишити перед підйомом — місце для паркування є за 150 метрів від будинку. Точна позначка Gora&Lis і посилання на Google Maps — у розділі контактів.` },
   { q: 'Чи можна з домашніми тваринами?', a: 'Перебування з домашніми тваринами можливе лише у виняткових випадках, за попереднім погодженням із нами та за умови дотримання узгоджених правил. Будь ласка, зв’яжіться з нами до бронювання, щоб обговорити можливість проживання з вашим улюбленцем та умови перебування.' },
-  { q: 'Чи працюєте ви взимку?', a: LOREM },
+  { q: 'Чи працюєте ви взимку?', a: 'Так, працюємо взимку та приймаємо гостей протягом усього року.' },
 ]

@@ -15,7 +15,7 @@ create table public.reservations (
   check_out date not null,
   status text not null default 'confirmed' check (status in ('confirmed', 'tentative')),
   created_at timestamptz not null default now(),
-  constraint valid_stay check (check_out > check_in and check_out - check_in <= 366),
+  constraint valid_stay check (check_out - check_in between 2 and 366),
   -- [заїзд, виїзд): день виїзду можна використати для наступного заїзду.
   -- Захищає також від одночасного збереження з двох телефонів.
   constraint no_overlapping_reservations exclude using gist (

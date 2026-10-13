@@ -37,6 +37,7 @@ export function HousePage({ house }: { house: House }) {
           <p className="house-hero__price">
             {house.extraGuest && 'від '}<b>{money(house.price)}</b> / ніч · до {house.guests} осіб
           </p>
+          <p>Мінімальне бронювання — 2 ночі · Заїзд з 15:00, виїзд до 12:00</p>
           {house.extraGuest && (
             <p>
               Базова ціна за {house.extraGuest.included} гостей. За кожного наступного гостя — +{money(house.extraGuest.price)} / ніч.
@@ -127,7 +128,7 @@ export function HousePage({ house }: { house: House }) {
 
       <section className="container section">
         <h2 className="display display--sm display--dark">Питання</h2>
-        <Faq />
+        <Faq house={house} />
       </section>
 
       {other && (

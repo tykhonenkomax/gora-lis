@@ -18,6 +18,15 @@
 }
 
 /* ---------- Зайнятість і проста панель власника ---------- */
+.hero-contact { display: grid; gap: 6px; margin: 0 0 20px; }
+.hero-contact a { font-size: 1.25rem; font-weight: 700; }
+.hero-contact span { font-size: .9rem; }
+.booking__fields { display: contents; }
+.booking__honeypot { display: none; }
+.booking__privacy { font-size: .85rem; color: var(--muted); }
+.booking__error { padding: 16px; background: #f6e0df; color: #7d2535; border-radius: 12px; }
+.booking__error a { text-decoration: underline; white-space: nowrap; }
+.booking__fields:disabled button { opacity: .6; cursor: wait; }
 .availability, .admin-panel {
   background: var(--cream);
   color: var(--text);

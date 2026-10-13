@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { ArrowRight, ChevronDown } from 'lucide-react'
-import { brand, home, houses, type Slide } from '../data/site'
+import { brand, contacts, home, houses, type Slide } from '../data/site'
 import { nearby } from '../data/nearby'
 import { Img } from '../components/Img'
 import { useInView } from '../components/useInView'
@@ -17,6 +17,7 @@ function Hero() {
         <p className="kicker">Верховина · Карпати</p>
         <h1 className="display">{brand.name}</h1>
         <p className="lead">{brand.tagline}</p>
+        <p className="hero-contact"><a href={`tel:${contacts.phone}`}>{contacts.phoneLabel}</a><span>Відпочинок від 2 ночей</span></p>
         <a className="btn btn--light" href={href('home', 'houses')}>
           Обрати будинок <ArrowRight size={18} />
         </a>

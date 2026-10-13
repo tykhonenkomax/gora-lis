@@ -1,3 +1,5 @@
+import { validateStay } from '../../supabase/functions/_shared/bookingRules'
+export { earliestCheckout, MIN_NIGHTS } from '../../supabase/functions/_shared/bookingRules'
 // Дати — календарні дні, без перетворення локального часу на UTC.
 export function dateKey(date: Date): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -14,11 +16,7 @@ export function validDay(day: string): boolean {
 }
 
 export function rangeError(start: string, end: string, today = todayKey()): string {
-  if (!validDay(start) || !validDay(end)) return 'Оберіть дати заїзду та виїзду.'
-  if (start < today) return 'Дата заїзду не може бути в минулому.'
-  if (end <= start) return 'Виїзд має бути пізніше за заїзд.'
-  if ((Date.parse(end) - Date.parse(start)) / 86400000 > 366) return 'Оберіть період не довший за рік.'
-  return ''
+  return validateStay(start, end, today)
 }
 
 export function overlaps(start: string, end: string, otherStart: string, otherEnd: string): boolean {

@@ -14,6 +14,7 @@ export function Footer() {
           <a className="footer__phone" href={`tel:${contacts.phone}`}>
             <Phone size={18} /> {contacts.phoneLabel}
           </a>
+          <a href={`mailto:${contacts.email}`}>{contacts.email}</a>
           <p className="footer__addr">
             <MapPin size={18} /> {contacts.address}
           </p>

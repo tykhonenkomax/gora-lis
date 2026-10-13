@@ -6,6 +6,8 @@
 
 Календар зайнятості та панель власника `/admin`: [одноразове підключення Supabase](docs/booking-setup.md).
 
+Заявки з форми в Telegram та email: [підключення серверних сповіщень](docs/notifications-setup.md).
+
 ## Розробка
 
 ```sh

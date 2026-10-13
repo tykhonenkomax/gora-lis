@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { ArrowLeft, LogOut } from 'lucide-react'
 import { bookingClient, bookingError, type Reservation } from '../data/bookingApi'
-import { formatDay, monthStart, nightsBetween, overlaps, parseDay, rangeError, todayKey } from '../data/bookingDates'
+import { earliestCheckout, formatDay, monthStart, nightsBetween, overlaps, parseDay, rangeError, todayKey } from '../data/bookingDates'
 import { brand, houses, type House } from '../data/site'
 import { BookingCalendar, HouseSwitch } from '../components/Availability'
 import { href } from '../router'
@@ -105,7 +105,8 @@ function ReservationManager() {
           <h2>Додати бронювання</h2>
           <p>Натисніть у календарі день заїзду, потім день виїзду. Або введіть дати нижче.</p>
           <label>Заїзд<input type="date" required min={todayKey()} value={start} disabled={busy} onChange={event => { setStart(event.target.value); setEnd(''); if (event.target.value) setMonth(monthStart(parseDay(event.target.value))) }} /></label>
-          <label>Виїзд<input type="date" required min={start || todayKey()} value={end} disabled={busy} onChange={event => setEnd(event.target.value)} /></label>
+          <label>Виїзд<input type="date" required min={earliestCheckout(start || todayKey())} value={end} disabled={busy} onChange={event => setEnd(event.target.value)} /></label>
+          <p>Мінімальне бронювання — 2 ночі.</p>
           <fieldset className="admin-panel__status"><legend>Статус бронювання</legend>
             <label><input type="radio" name="status" value="confirmed" checked={status === 'confirmed'} disabled={busy} onChange={() => setStatus('confirmed')} /> ❤️ Підтверджене</label>
             <label><input type="radio" name="status" value="tentative" checked={status === 'tentative'} disabled={busy} onChange={() => setStatus('tentative')} /> 🌲 Попереднє</label>
