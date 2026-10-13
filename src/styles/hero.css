@@ -40,9 +40,7 @@
 .hero__primary:hover { background: #e8f3d5; }
 .hero__actions .btn--outline { border-color: #435143; }
 .hero__details { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #2e3a2e; }
-.hero__facts { display: flex; gap: 24px; }
-.hero__facts > span { display: grid; gap: 2px; color: #a9b5a6; font-size: .8rem; }
-.hero__facts strong { color: var(--cream); font-weight: 500; font-size: 1.45rem; letter-spacing: -.04em; }
+.hero__stay { color: #a9b5a6; font-size: .9rem; white-space: nowrap; }
 .hero__phone { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; white-space: nowrap; margin-left: auto; }
 .hero__phone svg { color: #c1d1b3; }
 .hero__visual { min-width: 0; margin: 0; overflow: hidden; border-radius: 24px; background: #e8ecdf; }
@@ -56,9 +54,6 @@
   transform: none;
   transition: none;
 }
-.hero__caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 22px; color: #263e30; font-size: .8rem; font-weight: 500; }
-.hero__caption > span { display: inline-flex; align-items: center; gap: 6px; }
-.hero__caption-plus { color: #819171; padding-inline: 3px; }
 
 @media (max-width: 1100px) and (min-width: 900px) {
   .hero { gap: 28px; padding-inline: 28px; }
@@ -75,7 +70,6 @@
     padding: calc(var(--header-height) + var(--safe-t)) 0 0;
   }
   .hero__visual { grid-row: 1; border-radius: 0; }
-  .hero__caption { padding: 12px var(--gutter); font-size: .72rem; gap: 8px; }
   .hero__copy { grid-row: 2; padding: 32px var(--gutter) 36px; }
   .hero__eyebrow { font-size: .62rem; letter-spacing: .1em; }
   .hero__title { margin: 18px 0; font-size: clamp(3.4rem, 15vw, 5rem); letter-spacing: -.065em; }
@@ -84,8 +78,6 @@
   .hero__actions { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; margin-top: 24px; }
   .hero__actions .btn { padding-inline: 12px; min-height: 50px; font-size: .8rem; }
   .hero__details { margin-top: 28px; padding-top: 20px; gap: 20px; }
-  .hero__facts { gap: 24px; }
-  .hero__facts strong { font-size: 1.35rem; }
   .hero__phone { font-size: .8rem; }
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ArrowRight, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, Phone } from 'lucide-react'
 import { brand, contacts, home, houses, type Slide } from '../data/site'
 import { nearby } from '../data/nearby'
 import { Img } from '../components/Img'
@@ -21,13 +21,12 @@ function Hero() {
           <a className="btn btn--outline" href={href('home', 'availability')}>Вільні дати</a>
         </div>
         <div className="hero__details">
-          <div className="hero__facts"><span><strong>02</strong> будинки</span><span><strong>від 2</strong> ночей</span></div>
+          <p className="hero__stay">Бронювання від 2 ночей</p>
           <a className="hero__phone" href={`tel:${contacts.phone}`}><Phone size={17} />{contacts.phoneLabel}</a>
         </div>
       </div>
       <figure className="hero__visual">
         <Img className="slide__media" photo={home.heroWide} eager sizes="(max-width: 899px) 100vw, 58vw" />
-        <figcaption className="hero__caption"><span>Atmosfera <span className="hero__caption-plus">+</span> Panorama</span><span><MapPin size={15} /> Верховина</span></figcaption>
       </figure>
     </section>
   )
@@ -84,7 +83,6 @@ function Houses() {
   return (
     <section className="houses" id="houses">
       <div className="container">
-        <p className="kicker kicker--dark">Оренда</p>
         <h2 className="display display--md display--dark">Оберіть свій будинок</h2>
       </div>
       <div className="houses__grid">

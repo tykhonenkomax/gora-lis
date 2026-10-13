@@ -114,7 +114,6 @@ export function Availability({ house, showBooking = false }: { house?: House; sh
   return (
     <section className="availability section" id="availability">
       <div className="container">
-        <p className="kicker kicker--dark">Плануйте відпочинок</p>
         <h2 className="display display--sm display--dark">Вільні дати{house ? ` · ${house.name}` : ''}</h2>
         {!house && <HouseSwitch value={slug} onChange={setSlug} disabled={sending} />}
         <div className="availability__navigation">
